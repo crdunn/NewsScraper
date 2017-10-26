@@ -22,11 +22,11 @@ app.use(express.static("public"));
 
 app.use(bodyParser.urlencoded({ extended: false }));
 
-//initializing handelbars
-var exphbs = require("express-handlebars");
+// //initializing handelbars
+// var exphbs = require("express-handlebars");
 
-app.engine("handlebars", exphbs({ defaultLayout: "main" }));
-app.set("view engine", "handlebars");
+// app.engine("handlebars", exphbs({ defaultLayout: "main" }));
+// app.set("view engine", "handlebars");
 
 
 var routes = require("./controllers/news_controllers.js");
