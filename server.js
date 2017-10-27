@@ -100,6 +100,10 @@ app.get("/articles/:id", function(req, res) {
     });
 });
 
+app.get("/drop", function(req, res) {
+    mongoose.connection.dropDatabase();
+    res.redirect('back');
+});
 
 
 
