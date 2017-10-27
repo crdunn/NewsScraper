@@ -35,8 +35,11 @@ app.use(bodyParser.urlencoded({ extended: false }));
 //app.use("/", routes);
 
 // Connect to the Mongo DB
+
+var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/mongoHeadlines";
+
 mongoose.Promise = Promise;
-mongoose.connect("mongodb://localhost/NewsScraperPopulator", {
+mongoose.connect(MONGODB_URI, {
   useMongoClient: true
 });
 
@@ -100,6 +103,8 @@ app.get("/articles/:id", function(req, res) {
     });
 });
 
+
+// route for droping a database.  Mostly for testing purposes
 app.get("/drop", function(req, res) {
     mongoose.connection.dropDatabase();
     res.redirect('back');
