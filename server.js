@@ -14,7 +14,7 @@ var axios = require("axios");
 var db = require('./models')
 
 //setting the default port
-var PORT = 3000;
+var PORT = process.env.PORT || 3000
 //Initializing Express
 var app = express();
 
