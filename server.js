@@ -43,7 +43,7 @@ mongoose.connect(MONGODB_URI, {
   useMongoClient: true
 });
 
-
+//route for scraping articles into the db
 app.get("/scrape", function(req, res) {
 
   axios.get("https://www.reddit.com/r/TheOnion+nottheonion/").then(function(response) {
@@ -104,7 +104,43 @@ app.get("/articles/:id", function(req, res) {
 });
 
 
-// route for droping a database.  Mostly for testing purposes
+// Route for saving/updating an Article's associated Note
+app.post("/articles/:id", function(req, res) {
+  db.Note
+    .create(req.body)
+    .then(function(dbNote) {
+
+      return db.Article.findOneAndUpdate({ _id: req.params.id }, { note: dbNote._id }, { new: true });
+    })
+    .then(function(dbArticle) {
+      res.json(dbArticle);
+    })
+    .catch(function(err) {
+      res.json(err);
+    });
+});
+
+
+
+
+// Route for grabbing a specific Article by id, populate it with it's notes
+app.get("/articles/:id", function(req, res) {
+  db.Article
+    .findOne({ _id: req.params.id })
+    .populate("note")
+    .then(function(dbArticle) {
+      res.json(dbArticle);
+    })
+    .catch(function(err) {
+      res.json(err);
+    });
+});
+
+
+
+
+
+// route for droping a database and starting fresh.  Mostly for testing purposes
 app.get("/drop", function(req, res) {
     mongoose.connection.dropDatabase();
     res.redirect('back');
