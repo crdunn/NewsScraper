@@ -30,7 +30,7 @@ $(document).on("click", "#addGuess", function() {
     });
 
   $("#noteText").val("");
-  alert("Note Added");
+  alert("Guess Added");
 });
 
 
