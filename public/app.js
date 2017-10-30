@@ -3,7 +3,7 @@
 
 $.getJSON("/articles", function(data) {
   for (var i = 0; i < data.length; i++) {
-    $("#articles").append("<div id='news' class='row justify-content-center'><div class='col-10'><div class='card' data-id='" + data[i]._id + "'><div class='card-header'>" + data[i].title + "</div><div class='card-body'><p><a href='" + data[i].link + "'>Click here for link</a></p><div class='form-group'><label for='noteText'>Note</label><textarea class='form-control' id='noteText' rows='3'></textarea></div><div class='form-group'></div><fieldset class='form-group'><div class='form-check form-check-inline'><label class='form-check-label'><input class='form-check-input' type='radio' name='guess' id='onion' value='false' checked>The Onion</label></div><div class='form-check form-check-inline'><label class='form-check-label'><input class='form-check-input' type='radio' name='guess' id='notOnion' value='true'> NotTheOnion</label></div></fieldset><a href='#'' class='btn btn-primary' id='seeGuess' data-id='"+data[i]._id+"'>See Your Guess</a><span>             </span><a href='#'' class='btn btn-primary' id='addGuess' data-id='"+data[i]._id+"'>Add Your Guess</a></div><div class='results'></div></div></div>");
+    $("#articles").append("<div id='news' class='row justify-content-center'><div class='col-10'><div class='card' data-id='" + data[i]._id + "'><div class='card-header'>" + data[i].title + "</div><div class='card-body'><p><a href='" + data[i].link + "'>Click here for link</a></p><div class='form-group'><label for='noteText'>Note</label><textarea class='form-control' id='noteText' rows='3'></textarea></div><div class='form-group'></div><fieldset class='form-group'><div class='form-check form-check-inline'><label class='form-check-label'><input class='form-check-input' type='radio' name='guess' id='onion' value='false' checked>The Onion</label></div><div class='form-check form-check-inline'><label class='form-check-label'><input class='form-check-input' type='radio' name='guess' id='notOnion' value='true'> NotTheOnion</label></div></fieldset><a href='#'' class='btn btn-primary' id='seeGuess' data-id='"+data[i]._id+"'>See Your Guess</a><span>             </span><a href='#'' class='btn btn-primary' id='addGuess' data-id='"+data[i]._id+"'>Add Your Guess</a></div><div class='results"+data[i]._id+"' ></div></div></div>");
   }
 });
 
@@ -40,7 +40,7 @@ $(document).on("click", "#addGuess", function() {
 
 
   
-// This function will show all the previous guesses
+// This function will show the previous guess
 $(document).on("click", "#seeGuess", function() {
   event.preventDefault();
   
@@ -51,7 +51,12 @@ $(document).on("click", "#seeGuess", function() {
     url: "/articles/" + thisId
   })
     .done(function(data) {
-      $('.results').html("<div class='row justify-content-center'><div class='card col-11'><div class='card-header'>You guessed that this was a "+data.note.guess+" story, because:</div><div class='card-body'>"+data.note.text+"</div></div>");
+      if (data.note == undefined) {
+          alert("No guesses yet");
+      } else {
+        $('.results'+thisId).html("<div class='row justify-content-center'><div class='card col-11'><div class='card-header'>You guessed that this was a "+data.note.guess+" story, because:</div><div class='card-body'>"+data.note.text+"</div></div>");
+      }
+
       });
 });
 
